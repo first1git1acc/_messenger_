@@ -10,6 +10,12 @@
         {% csrf_token %}
         {{registration_form}}
         <input type="submit" value="Registration">
+        <div>
+            {% if error %}
+            <h1>{{error}}</h1>
+            {% endif %}
+        </div>
     </form>
+    <a href="{% url 'myapp:main_page' %}">Main page</a>
 </body>
 </html>

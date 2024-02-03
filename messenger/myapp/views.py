@@ -4,7 +4,8 @@ from django import forms
 from django.contrib.auth import authenticate,login,logout
 from django.urls import reverse
 from django.contrib.auth.models import User
-
+from myapp.models import userPage
+from django.utils import timezone
 class Login(forms.Form):
     username = forms.CharField(widget=forms.TextInput(attrs={"plasceholder":"Username"}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={"placeholder":"Username"}))
@@ -51,8 +52,18 @@ def for_registration(request):
     })
 
 def user_page(request):
-    return render(request,"myapp/userpage.html")
+    user_obj = userPage.objects.filter(user=request.user.id)[0]
+    user_obj.status = "Online"
+    user_obj.time = timezone.now()
+    user_obj.save()
+    return render(request,"myapp/userpage.html",{
+        "status":user_obj.status,
+        "time":user_obj.time
+    })
 
 def  log_out(request):
+    user_obj = userPage.objects.filter(user=request.user.id)[0]
+    user_obj.status = "Offline"
+    user_obj.save()
     logout(request)
     return render(request,"myapp/main_page.html")

@@ -6,8 +6,14 @@
     <title>My Page</title>
 </head>
 <body>
-    <h3>Your email : {{request.user.email}}</h3>
-    <h3>Your username : {{request.user.username}}</h3>
+    <div>
+        <div>Time : {{time}}</div>
+        <div>Status :{{status}}</div>
+    </div>
+    <div>
+        <h3>My username : {{request.user.username}}</h3>
+        <h3>My email : {{request.user.email}}</h3>
+    </div>
     <a href="{% url 'myapp:log_out' %}">Log out</a>
 </body>
 </html>

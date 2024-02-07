@@ -6,7 +6,7 @@
     <title>Login in page</title>
 </head>
 <body>
-    <form action="" method="post">
+    <form action="{% url 'myapp:for_login' %}" method="post">
         {{login_form}}
         {% csrf_token %}
         <input type="submit" value="Log in">

@@ -10,12 +10,17 @@ class userPage(models.Model):
     OFFLINE = "OFF"
     ONLINE = "ON"
     CHOICES = [
-        (OFFLINE,"Offline"),
-        (ONLINE,"Online")
+        (OFFLINE, "Offline"),
+        (ONLINE, "Online")
     ]
     status = models.CharField(max_length = 3, choices = CHOICES, default = OFFLINE)
     time = models.DateTimeField(default = timezone.now)
-    user = models.OneToOneField(User,on_delete = models.CASCADE,default=None)
+    user = models.OneToOneField(User, on_delete = models.CASCADE, default=None)
 
-
+class Post(models.Model):
+    body = models.CharField(max_length = 256, default = None)
+    add_time = models.DateTimeField(default = timezone.now)
+    user = models.ForeignKey(User,on_delete = models.CASCADE, default = None)
+    title = models.CharField(max_length = 100)
+    slug = models.SlugField(max_length = 250, default = None)
     

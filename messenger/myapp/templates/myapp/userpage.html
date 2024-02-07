@@ -15,5 +15,19 @@
         <h3>My email : {{request.user.email}}</h3>
     </div>
     <a href="{% url 'myapp:log_out' %}">Log out</a>
+    <a href="{% url 'myapp:adding_post' %}">Add new post</a>
+
+    <div>
+        {% if all_posts %}
+            {% for i in all_posts %}
+                <div>
+                    <h2>{{i.title}}</h2>
+                    <p>{{i.body}}</p>
+                    <h4>{{i.slug}}</h4>
+                    <hr>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
 </body>
 </html>

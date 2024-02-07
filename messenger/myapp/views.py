@@ -1,19 +1,11 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
-from django import forms
-from django.contrib.auth import authenticate,login,logout
+from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from django.contrib.auth.models import User
-from myapp.models import userPage
+from myapp.models import userPage, Post
 from django.utils import timezone
-class Login(forms.Form):
-    username = forms.CharField(widget=forms.TextInput(attrs={"plasceholder":"Username"}))
-    password = forms.CharField(widget=forms.PasswordInput(attrs={"placeholder":"Username"}))
-
-class Registration(forms.Form):
-    username = forms.CharField(widget=forms.TextInput(attrs={"placeholder":"Username"}))
-    email = forms.CharField(widget=forms.EmailInput(attrs={"placeholder":"email"}))
-    password = forms.CharField(widget=forms.PasswordInput(attrs={"placeholder":"Password"}))
+from myapp.forms import Login, Registration, add_new_post
 
 def main_page(request):
     return render(request,"myapp/main_page.html")
@@ -58,7 +50,8 @@ def user_page(request):
     user_obj.save()
     return render(request,"myapp/userpage.html",{
         "status":user_obj.status,
-        "time":user_obj.time
+        "time":user_obj.time,
+        "all_posts":Post.objects.all()
     })
 
 def  log_out(request):
@@ -67,3 +60,17 @@ def  log_out(request):
     user_obj.save()
     logout(request)
     return render(request,"myapp/main_page.html")
+
+def adding_post(request):
+    if request.method == "POST":
+        form = add_new_post(request.POST)
+        if form.is_valid():
+            title = form.cleaned_data['title']
+            body = form.cleaned_data['body']
+            slug = form.cleaned_data['slug']
+            obj = Post(title = title, body = body, slug = slug, add_time = timezone.now(), user = request.user)
+            obj.save()
+            return HttpResponseRedirect(reverse('myapp:user_page'))
+    return render(request,'myapp/add_post.html',{
+        "post_form":add_new_post(),
+    })

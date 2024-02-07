@@ -4,6 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Page</title>
+    <style>
+        body{
+            background-color: darkgrey;
+        }
+        #invisible{
+            display:none;
+            position:absolute;
+            top:10%;
+            left:80%;
+            border:1px solid black;
+            width:200px;
+            height:200px;
+        }
+    </style>
 </head>
 <body>
     <div>
@@ -29,5 +43,21 @@
             {% endfor %}
         {% endif %}
     </div>
+    <button id="for_form">Find post</button>
+    <div id="invisible">
+        <form action="" method="post">
+            {% csrf_token %}
+            {{find_form}}
+            <input type="submit" value="Find">
+        </form>
+    </div>
+    <script>
+        let for_form = document.querySelector('#for_form');
+        let invisible = document.querySelector('#invisible');
+        for_form.onclick = function(){
+            invisible.style.display = "block";
+        }
+
+    </script>
 </body>
 </html>

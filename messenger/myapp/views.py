@@ -5,7 +5,8 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 from myapp.models import userPage, Post
 from django.utils import timezone
-from myapp.forms import Login, Registration, add_new_post
+from myapp.forms import Login, Registration, add_new_post, find_form
+from django.shortcuts import get_object_or_404
 
 def main_page(request):
     return render(request,"myapp/main_page.html")
@@ -48,10 +49,30 @@ def user_page(request):
     user_obj.status = "Online"
     user_obj.time = timezone.now()
     user_obj.save()
+    if request.method == "POST":
+        form = find_form(request.POST)
+        if form.is_valid():
+            year = form.cleaned_data['year']
+            month = form.cleaned_data['month']
+            day = form.cleaned_data['day']
+            slug = form.cleaned_data['slug']
+            print(year,month,day,slug)
+            post = get_object_or_404(Post, 
+                             add_time__year = year,
+                             add_time__month = month,
+                             add_time__day = day,
+                             slug = slug
+                             )
+            return HttpResponseRedirect(reverse('myapp:find_post', args = (post.add_time.year,
+                                                                           post.add_time.month,
+                                                                           post.add_time.day,
+                                                                           post.slug)))
+
     return render(request,"myapp/userpage.html",{
         "status":user_obj.status,
         "time":user_obj.time,
-        "all_posts":Post.objects.all()
+        "all_posts":Post.objects.all(),
+        "find_form":find_form()
     })
 
 def  log_out(request):
@@ -73,4 +94,15 @@ def adding_post(request):
             return HttpResponseRedirect(reverse('myapp:user_page'))
     return render(request,'myapp/add_post.html',{
         "post_form":add_new_post(),
+    })
+
+def find_post(request, year, month, day, slug):
+    post = get_object_or_404(Post, 
+                             add_time__year = year,
+                             add_time__month = month,
+                             add_time__day = day,
+                             slug = slug
+                             )
+    return render(request,'myapp/post_which_finded.html',{
+        "post":post,
     })

@@ -7,7 +7,7 @@
 </head>
 <body>
     <form action="{% url 'myapp:for_login' %}" method="post">
-        {{login_form}}
+        {{login_form.as_p}}
         {% csrf_token %}
         <input type="submit" value="Log in">
     </form>

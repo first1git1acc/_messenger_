@@ -7,6 +7,7 @@ from myapp.models import userPage, Post
 from django.utils import timezone
 from myapp.forms import Login, Registration, add_new_post, find_form
 from django.shortcuts import get_object_or_404
+#from django.core.mail import send_mail
 
 def main_page(request):
     return render(request,"myapp/main_page.html")
@@ -106,3 +107,19 @@ def find_post(request, year, month, day, slug):
     return render(request,'myapp/post_which_finded.html',{
         "post":post,
     })
+
+'''def send_email(request):
+    sent = False
+    if request.method == "POST":
+        form = Email(request.POST,initial={'email_from': request.user.email})
+        if form.is_valid():
+            email_from = form.cleaned_data['email_from']
+            email_to = form.cleaned_data['email_to']
+            text = form.cleaned_data['text']
+            send_mail('email form django', text, email_from, [email_to])
+            sent = True
+            return HttpResponseRedirect(reverse("myapp:user_page"))
+    return render(request,'myapp/send_email.html',{
+        "email_form":Email(),
+        "sent":sent,
+    })'''

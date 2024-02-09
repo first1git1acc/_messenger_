@@ -8,7 +8,7 @@
 <body>
     <form action="{% url 'myapp:for_registration' %}" method="post">
         {% csrf_token %}
-        {{registration_form}}
+        {{registration_form.as_p}}
         <input type="submit" value="Registration">
         <div>
             {% if error %}

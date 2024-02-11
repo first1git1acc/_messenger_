@@ -23,4 +23,12 @@ class Post(models.Model):
     user = models.ForeignKey(User,on_delete = models.CASCADE, default = None)
     title = models.CharField(max_length = 100)
     slug = models.SlugField(max_length = 250, default = None)
+
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete = models.CASCADE, related_name = "comments")
+    name = models.CharField(max_length = 80)
+    email = models.EmailField()
+    body = models.TextField()
+    active = models.BooleanField(default = True)
+
     

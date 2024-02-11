@@ -1,8 +1,8 @@
 from django import forms
-
+from myapp.models import Comment
 class Login(forms.Form):
-    username = forms.CharField(widget = forms.TextInput(attrs={"plasceholder":"Username"}))
-    password = forms.CharField(widget = forms.PasswordInput(attrs={"placeholder":"Username"}))
+    username = forms.CharField(widget = forms.TextInput(attrs={"placeholder":"Username"}))
+    password = forms.CharField(widget = forms.PasswordInput(attrs={"placeholder":"password"}))
 
 class Registration(forms.Form):
     username = forms.CharField(widget = forms.TextInput(attrs={"placeholder":"Username"}))
@@ -26,3 +26,8 @@ class find_form(forms.Form):
     email_to = forms.EmailField()
     text = forms.CharField(max_length = 256)'''
     
+class Commentar(forms.ModelForm):
+    class Meta():
+        model = Comment
+        #які поля потрібно використати із моделі
+        fields = ['name', 'email', 'body']

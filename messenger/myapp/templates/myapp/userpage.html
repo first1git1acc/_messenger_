@@ -6,7 +6,7 @@
     <title>My Page</title>
     <style>
         body{
-            background-color: darkgrey;
+            background-color: #965;
         }
         #invisible{
             display:none;
@@ -16,6 +16,9 @@
             border:1px solid black;
             width:200px;
             height:200px;
+        }
+        div{
+            background-color: bisque;
         }
     </style>
 </head>
@@ -38,7 +41,10 @@
                     <h2>{{i.title}}</h2>
                     <p>{{i.body}}</p>
                     <h4>{{i.slug}}</h4>
+                    <h3>{{i.add_time}}</h3>
+                    <a href="{% url 'myapp:shared' i.id %}">Shared this post</a>
                     <hr>
+
                 </div>
             {% endfor %}
         {% endif %}

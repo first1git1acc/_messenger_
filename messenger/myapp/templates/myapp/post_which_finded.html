@@ -12,6 +12,13 @@
         <h4>{{post.slug}}</h4>
         <hr>
     </div>
+    <div>
+        {% for i in comments %}
+            <p>{{i.name}}</p>
+            <p>{{i.email}}</p>
+            <p>{{i.body}}</p>
+        {% endfor %}
+    </div>
     <a href="{% url 'myapp:user_page' %}">Return on your page</a>
 </body>
 </html>

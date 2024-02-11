@@ -3,9 +3,9 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from django.contrib.auth.models import User
-from myapp.models import userPage, Post
+from myapp.models import userPage, Post, Comment
 from django.utils import timezone
-from myapp.forms import Login, Registration, add_new_post, find_form
+from myapp.forms import Login, Registration, add_new_post, find_form, Commentar
 from django.shortcuts import get_object_or_404
 #from django.core.mail import send_mail
 
@@ -72,8 +72,8 @@ def user_page(request):
     return render(request,"myapp/userpage.html",{
         "status":user_obj.status,
         "time":user_obj.time,
-        "all_posts":Post.objects.all(),
-        "find_form":find_form()
+        "all_posts":Post.objects.filter(user=request.user.id),
+        "find_form":find_form(),
     })
 
 def  log_out(request):
@@ -104,9 +104,41 @@ def find_post(request, year, month, day, slug):
                              add_time__day = day,
                              slug = slug
                              )
+    comments = post.comments.filter(active=True)
     return render(request,'myapp/post_which_finded.html',{
         "post":post,
+        "comments":comments
     })
+
+def shared(request, id):
+    post = get_object_or_404(Post, id=id)
+    return render(request, 'myapp/shared.html',{
+        "post":post,
+        "comment_form":Commentar(),
+    })
+
+def post_comment(request, id):
+    post = get_object_or_404(Post, id=id)
+    comment = None
+    form = Commentar(request.POST)
+    if form.is_valid():
+        comment = form.save(commit=False)
+        comment.post = post
+        comment.save()
+    return render(request,'myapp/shared.html',{
+        "post":post,
+        "comment_form":Commentar(),
+        "comment":comment
+    })
+
+        
+
+
+
+
+
+
+
 
 '''def send_email(request):
     sent = False

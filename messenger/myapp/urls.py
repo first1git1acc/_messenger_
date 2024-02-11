@@ -11,5 +11,7 @@ urlpatterns = [
     path("log_out", views.log_out, name = "log_out"),
     path("add_post", views.adding_post, name = "adding_post"),
     path("<int:year>/<int:month>/<int:day>/<slug:slug>", views.find_post, name = "find_post"),
+    path("<int:id>", views.shared, name="shared"),
+    path("<int:id>/comment/",views.post_comment, name="post_comment")
 ]
  #path("send_email", views.send_email, name = "send_email")

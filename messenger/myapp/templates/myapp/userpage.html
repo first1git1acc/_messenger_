@@ -5,9 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Page</title>
     <style>
-        body{
-            background-color: #965;
-        }
         #invisible{
             display:none;
             position:absolute;
@@ -16,9 +13,6 @@
             border:1px solid black;
             width:200px;
             height:200px;
-        }
-        div{
-            background-color: bisque;
         }
     </style>
 </head>
@@ -33,7 +27,7 @@
     </div>
     <a href="{% url 'myapp:log_out' %}">Log out</a>
     <a href="{% url 'myapp:adding_post' %}">Add new post</a>
-
+    <hr>
     <div>
         {% if all_posts %}
             {% for i in all_posts %}
@@ -42,6 +36,7 @@
                     <p>{{i.body}}</p>
                     <h4>{{i.slug}}</h4>
                     <h3>{{i.add_time}}</h3>
+                    <p>Tags : {{i.tags.all|join:", "}}</p>
                     <a href="{% url 'myapp:shared' i.id %}">Shared this post</a>
                     <hr>
 
@@ -49,19 +44,37 @@
             {% endfor %}
         {% endif %}
     </div>
-    <button id="for_form">Find post</button>
+    <div>
+        <p>Find post :</p>
+        <button id="for_form">Time and slug</button>
+        <button id="for_slug">Tag</button>
+    </div>
     <div id="invisible">
-        <form action="" method="post">
+        <form action="{% url 'myapp:user_page' %}" method="post">
             {% csrf_token %}
             {{find_form}}
             <input type="submit" value="Find">
         </form>
     </div>
+    <div id="invisible">
+        <form action="{% url 'myapp:find_by_tags' %}" method="post">
+            {% csrf_token %}
+            {{tag_form}}
+            <input type="submit" value="Find">
+        </form>
+    </div>
     <script>
         let for_form = document.querySelector('#for_form');
-        let invisible = document.querySelector('#invisible');
+        let for_slug = document.querySelector('#for_slug');
+        let invisible = document.querySelectorAll('#invisible');
+        console.log(invisible);
         for_form.onclick = function(){
-            invisible.style.display = "block";
+            invisible[0].style.display = "block";
+            invisible[1].style.display = "none";
+        }
+        for_slug.onclick = function(){
+            invisible[1].style.display = "block";
+            invisible[0].style.display = "none";
         }
 
     </script>

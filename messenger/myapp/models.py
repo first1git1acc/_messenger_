@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
+from taggit.managers import TaggableManager
 # Create your models here.
 class userPage(models.Model):
     '''class Status(models.TextChoices):
@@ -18,6 +19,7 @@ class userPage(models.Model):
     user = models.OneToOneField(User, on_delete = models.CASCADE, default=None)
 
 class Post(models.Model):
+    tags = TaggableManager()
     body = models.CharField(max_length = 256, default = None)
     add_time = models.DateTimeField(default = timezone.now)
     user = models.ForeignKey(User,on_delete = models.CASCADE, default = None)

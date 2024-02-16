@@ -5,8 +5,9 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 from myapp.models import userPage, Post, Comment
 from django.utils import timezone
-from myapp.forms import Login, Registration, add_new_post, find_form, Commentar
+from myapp.forms import Login, Registration, add_new_post, find_form, Commentar, find_by_tags
 from django.shortcuts import get_object_or_404
+from taggit.models import Tag
 #from django.core.mail import send_mail
 
 def main_page(request):
@@ -74,6 +75,7 @@ def user_page(request):
         "time":user_obj.time,
         "all_posts":Post.objects.filter(user=request.user.id),
         "find_form":find_form(),
+        "tag_form":find_by_tags()
     })
 
 def  log_out(request):
@@ -129,6 +131,19 @@ def post_comment(request, id):
         "post":post,
         "comment_form":Commentar(),
         "comment":comment
+    })
+
+def find_post_by_tag(request):
+    tag = None
+    posts = None
+    tag_slug = request.POST['tagg']
+    if tag_slug:
+        tag = get_object_or_404(Tag, slug=tag_slug)
+        posts = Post.objects.filter(tags__in=[tag])
+    
+    return render(request,'myapp/for_tag_finder.html',{
+        "tag":tag,
+        "posts":posts
     })
 
         

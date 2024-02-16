@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find by Tag</title>
+</head>
+<body>
+    <a href="{% url 'myapp:user_page' %}">Back</a>
+    <p>Founded by tag : {{tag}}</p>
+    <div>
+        {% if posts %}
+            {% for i in posts %}
+                <div>
+                    <h2>{{i.title}}</h2>
+                    <p>{{i.body}}</p>
+                    <h4>{{i.slug}}</h4>
+                    <h3>{{i.add_time}}</h3>
+                    <p>Tags : {{i.tags.all|join:", "}}</p>
+                    <a href="{% url 'myapp:shared' i.id %}">Shared this post</a>
+                    <hr>
+
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+</body>
+</html>

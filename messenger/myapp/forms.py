@@ -1,5 +1,5 @@
 from django import forms
-from myapp.models import Comment
+from myapp.models import Comment, Post
 class Login(forms.Form):
     username = forms.CharField(widget = forms.TextInput(attrs={"placeholder":"Username"}))
     password = forms.CharField(widget = forms.PasswordInput(attrs={"placeholder":"password"}))
@@ -31,3 +31,6 @@ class Commentar(forms.ModelForm):
         model = Comment
         #які поля потрібно використати із моделі
         fields = ['name', 'email', 'body']
+
+class find_by_tags(forms.Form):
+    tagg = forms.SlugField(max_length=80)
